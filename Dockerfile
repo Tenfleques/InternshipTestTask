@@ -104,7 +104,9 @@ RUN wget https://raw.githubusercontent.com/tensorflow/docs/master/site/en/tutori
 RUN wget https://raw.githubusercontent.com/tensorflow/docs/master/site/en/tutorials/keras/text_classification.ipynb
 RUN wget https://raw.githubusercontent.com/tensorflow/docs/master/site/en/tutorials/keras/text_classification_with_hub.ipynb
 
-RUN pip install tensorflow keras tqdm scikit-image scitools3 opencv-python
+RUN pip install tensorflow keras tqdm scikit-image scitools3 opencv-python Shapely
+
+RUN pip install imgaug
 
 COPY readme-for-jupyter.md README.md
 RUN apt-get autoremove -y && apt-get remove -y wget
