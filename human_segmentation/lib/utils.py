@@ -108,27 +108,38 @@ def get_xy(images, img_path, img_mask_path=None, IMG_HEIGHT=240, IMG_WIDTH=240, 
     return (X_, Y_)
 
 
-def predict_mask(model, x_test, img_height=340, img_width=240):
+def predict_mask(model, X_, img_height=320, img_width=240):
     """ predict the mask for a given image and resize it to the provided img_height and img_width
 
     Parameters
     ----------
     model : keras.model
         model to use to predict the mask
-    x_test : (np.ndarray, 3d )
-        image in np.ndarray form 
+    X_ : (np.ndarray, 4d )
+        array of source images in np.ndarray form 
     img_height : int, optional (default=340)
         output image mask height
     img_width : int, optional (default=240)
         output image mask width
     Returns
     -------
-    (np.ndarray, 3d)
-        the predicted image mask reshaped to to the provided dimensions
+    ((np.ndarray, 4d), (np.ndarray, 3d))
+        the array of reshaped X_ and array of predicted masks reshaped to to the provided dimensions
     """
-    y_test = model.predict(x_test[None,:,:,:])[0]
-    y_test = (y_test.squeeze()*255).astype(np.uint8)
-    y_test = resize(y_test, (img_height, img_width), mode='constant', 
-                                      preserve_range=True)
-    
-    return y_test
+    length_test = len(X_)
+
+    Y_ = np.zeros((length_test , img_height, img_width), dtype=np.uint8)
+    X_320_240 = np.zeros((length_test , img_height, img_width, 3), dtype=np.uint8)
+    for i in range(length_test):
+        y_ = model.predict(X_[i][None,:,:,:])[0]
+        y_ = (y_.squeeze()*255).astype(np.uint8)
+
+        Y_[i] = resize(y_, (320, 240), mode='constant', 
+                                              preserve_range=True).astype(np.uint8)
+
+
+        X_320_240[i] = resize(X_[i], (320, 240, 3), mode='constant', 
+                                              preserve_range=True).astype(np.uint8)
+
+    return (X_320_240, Y_)
+
