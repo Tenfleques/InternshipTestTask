@@ -106,13 +106,19 @@ RUN wget https://raw.githubusercontent.com/tensorflow/docs/master/site/en/tutori
 
 RUN pip install tensorflow keras tqdm scikit-image scitools3 opencv-python Shapely
 
-RUN pip install imgaug
+RUN pip install flask
 
 COPY readme-for-jupyter.md README.md
 RUN apt-get autoremove -y && apt-get remove -y wget
 WORKDIR /tf
 RUN chmod 777 /tf
-EXPOSE 8888
+
+RUN curl -sL https://deb.nodesource.com/setup_11.x | bash - && apt-get install -y nodejs
+
+RUN npm install http-server
+
+EXPOSE 8888 8080
+
 
 RUN ${PYTHON} -m ipykernel.kernelspec
 

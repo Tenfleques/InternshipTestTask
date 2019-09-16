@@ -9,4 +9,4 @@ dir=$(pwd)
 
 docker build --rm -f "Dockerfile" -t tf-local:latest .
 
-docker run -it -p 8888:8888 -p 6006:6008 -v $dir/human_segmentation:/tf/tendai --name tf-local tf-local:latest
+docker run -it -p 8888:8888 -p 5000:5000 -v $dir/human_segmentation:/tf/tendai --name tf-local tf-local:latest

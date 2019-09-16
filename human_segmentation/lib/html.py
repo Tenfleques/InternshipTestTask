@@ -93,7 +93,7 @@ def get_html(paths_to_imgs, pred_masks, path_to_save="results/test"):
         Image.fromarray(img).save(f"{path_to_save}/{img_id}_img.jpg")
         Image.fromarray(pred_mask).save(f"{path_to_save}/{img_id}_pred_mask.png")
         crop_img = img.copy()
-        crop_img[pred_mask == 0] = 0
+        crop_img[pred_mask[:,:,0] == 0] = 0
         Image.fromarray(crop_img).save(f"{path_to_save}/{img_id}_crop.png")
 
     html = generate_html(path_to_save)
