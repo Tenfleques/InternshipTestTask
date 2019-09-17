@@ -128,13 +128,13 @@ def predict_mask(model, X_, img_height=320, img_width=240):
     """
     length_test = len(X_)
 
-    Y_ = np.zeros((length_test , img_height, img_width), dtype=np.uint8)
+    Y_ = np.zeros((length_test , img_height, img_width, 1), dtype=np.uint8)
     X_320_240 = np.zeros((length_test , img_height, img_width, 3), dtype=np.uint8)
     for i in range(length_test):
         y_ = model.predict(X_[i][None,:,:,:])[0]
         y_ = (y_.squeeze()*255).astype(np.uint8)
 
-        Y_[i] = resize(y_, (320, 240), mode='constant', 
+        Y_[i] = resize(y_, (320, 240, 1), mode='constant', 
                                               preserve_range=True).astype(np.uint8)
 
 
